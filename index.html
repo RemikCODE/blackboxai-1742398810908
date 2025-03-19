@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/easyqrcodejs@4.4.13/dist/easy.qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-purple': '#581c87',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: black;
+            min-height: 100vh;
+        }
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+        }
+        #qrcode canvas {
+            padding: 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            max-width: 100%;
+            height: auto;
+        }
+        .color-picker {
+            -webkit-appearance: none;
+            padding: 0;
+            border: none;
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        .color-picker::-webkit-color-swatch {
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+        }
+        .color-picker::-webkit-color-swatch-wrapper {
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-2xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-dark-purple mb-4">QR Code Generator</h1>
+            <p class="text-gray-400">Generate dynamic, editable QR codes with custom colors and styles</p>
+        </header>
+        
+        <main class="bg-black border-2 border-dark-purple rounded-lg p-6 shadow-lg">
+            <div class="space-y-6">
+                <!-- Input Section -->
+                <div class="space-y-4">
+                    <div class="flex gap-4">
+                        <button class="flex-1 bg-dark-purple bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-lg transition" data-type="url">
+                            <i class="fas fa-link mr-2"></i> URL
+                        </button>
+                        <button class="flex-1 bg-dark-purple bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-lg transition" data-type="text">
+                            <i class="fas fa-font mr-2"></i> Text
+                        </button>
+                        <button class="flex-1 bg-dark-purple bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-lg transition" data-type="email">
+                            <i class="fas fa-envelope mr-2"></i> Email
+                        </button>
+                    </div>
+                    
+                    <input 
+                        type="text" 
+                        id="qr-input" 
+                        placeholder="Enter URL, text, or email" 
+                        class="w-full p-3 rounded-lg bg-gray-900 text-white border border-dark-purple focus:outline-none focus:ring-2 focus:ring-dark-purple"
+                    >
+                </div>
+
+                <!-- Customization Section -->
+                <div class="border-t border-dark-purple pt-4">
+                    <h3 class="text-dark-purple text-lg mb-4">Customize QR Code</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-400 mb-2">Foreground Color</label>
+                            <input type="color" id="fg-color" value="#581c87" class="color-picker">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 mb-2">Background Color</label>
+                            <input type="color" id="bg-color" value="#FFFFFF" class="color-picker">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-gray-400 mb-2">Size</label>
+                            <input type="range" id="size" min="100" max="400" value="200" 
+                                class="w-full h-2 bg-dark-purple rounded-lg appearance-none cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-2">
+                    <button 
+                        id="generate-btn" 
+                        class="flex-1 bg-dark-purple hover:bg-purple-900 text-white font-semibold py-3 px-4 rounded-lg transition duration-200"
+                    >
+                        <i class="fas fa-qrcode mr-2"></i> Generate QR Code
+                    </button>
+                    
+                    <button 
+                        id="clear-btn" 
+                        class="bg-red-900 hover:bg-red-800 text-white font-semibold py-3 px-4 rounded-lg transition duration-200"
+                    >
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+
+                <!-- QR Code Display -->
+                <div id="qrcode" class="flex justify-center py-4 bg-white rounded-lg"></div>
+                
+                <!-- Download Button -->
+                <button 
+                    id="download-btn" 
+                    class="w-full bg-dark-purple hover:bg-purple-900 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 hidden"
+                >
+                    <i class="fas fa-download mr-2"></i> Download QR Code
+                </button>
+                
+                <div id="error-message" class="text-red-500 text-center"></div>
+            </div>
+        </main>
+
+        <footer class="mt-8 text-center text-gray-500">
+            <p>© 2023 QR Code Generator</p>
+        </footer>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
